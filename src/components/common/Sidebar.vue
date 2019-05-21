@@ -1,14 +1,23 @@
 <template>
     <div class="sidebar">
-        <el-menu :default-active="onRoutes" background-color="#d2dce6" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" active-text-color="#20a0ff" unique-opened router>
-            <template v-for="item in items">
-                <el-submenu :index="item.index">
+        <el-menu
+                :default-active="onRoutes"
+                background-color="#d2dce6"
+                class="el-menu-vertical-demo"
+                @open="handleOpen"
+                @close="handleClose"
+                :collapse="isCollapse"
+                active-text-color="#20a0ff"
+                unique-opened
+                router>
+            <template >
+                <el-submenu v-for="(item,index) in items" :index="item.index" :key="index">
                     <template slot="title">
-                        <i :class="item.icon"></i>
-                        <span slot="title">{{item.title}}</span>
-                    </template>
-                    <el-menu-item-group class="hidden-div" v-for="i in item.subs" v-if="item.subs">
-                        <el-menu-item :index="i.index">{{i.title}}</el-menu-item>
+                    <i :class="item.icon"></i>
+                    <span slot="title">{{item.title}}</span>
+                </template>
+                    <el-menu-item-group class="hidden-div" v-for="(list,i) in item.subs" :key="i">
+                        <el-menu-item :index="list.index">{{list.title}}</el-menu-item>
                     </el-menu-item-group>
                     <!--<template v-if="item.subs">-->
                         <!--<el-menu-item-group class="hidden-div" v-for="i in item.subs">-->
@@ -34,7 +43,7 @@
                         title:'用户管理',
                         subs:[
                             {
-                                index: 'user-manage-list',
+                                index: '/user-manage-list',
                                 title: '用户列表'
                             },
                             {
