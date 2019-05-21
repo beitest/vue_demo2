@@ -1,5 +1,10 @@
 # vue_demo2
 
+## Project 使用了
+```
+vue-router、axios、elementUI
+```
+
 ## Project setup
 ```
 npm install
