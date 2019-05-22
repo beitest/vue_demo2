@@ -2,7 +2,7 @@
 
 ## Project 使用了
 ```
-vue-router、axios、elementUI
+vue-router、axios、elementUI、vuex@3.1.1
 ```
 
 ## Project setup
