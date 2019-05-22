@@ -1,10 +1,10 @@
 <template>
-    <div class="user-manage-list">qweqeqe</div>
+    <div class="user-manage-list">sfasfasfasfasmhfbafasfm amsf</div>
 </template>
 
 <script>
     export default {
-        name: "user-manage-list"
+        name: "usermanagelist"
     }
 </script>
 
