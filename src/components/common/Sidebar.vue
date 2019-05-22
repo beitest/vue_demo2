@@ -1,6 +1,7 @@
 <template>
     <div class="sidebar">
-        <el-menu :default-active="onRoutes" background-color="#d2dce6" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" active-text-color="#20a0ff" unique-opened router>
+        <el-menu :default-active="onRoutes" background-color="#d2dce6" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                 :collapse="isCollapse" active-text-color="#20a0ff" unique-opened router>
             <template v-for="item in items">
                 <el-submenu :index="item.index">
                     <template slot="title">
@@ -34,7 +35,7 @@
                         title:'用户管理',
                         subs:[
                             {
-                                index: 'user-manage-list',
+                                index: '/user-manage-list',
                                 title: '用户列表'
                             },
                             {
