@@ -27,7 +27,7 @@ const getAdById = hot + '/getAdvertiseById';
 const saveAd = hot + '/advertiesementSave';
 
 //更新广告
-const updateAd = hot + '/advertiesementModify'
+const updateAd = hot + '/advertiesementModify';
 
 //发布广告
 const sendAd = hot + '/advertiesementPublish';

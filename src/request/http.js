@@ -11,11 +11,11 @@ import { Message } from 'element-ui';
 //设置默认请求头
 axios.defaults.headers = {
     'X-Requested-With': 'XMLHttpRequest'
-}
+};
 
 
 // 设置请求过期时间
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 10000;
 
 //请求拦截器
 axios.interceptors.request.use(config => {

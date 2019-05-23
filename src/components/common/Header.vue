@@ -92,6 +92,9 @@
                 }).catch(function (error) {
                     console.log(error);
                 });
+            },
+            login(){
+                this.$router.push('/login')
             }
         },
         computed: {

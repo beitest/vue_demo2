@@ -12,7 +12,6 @@
                     <transition name="move" mode="out-in">
                         <router-view></router-view>
                     </transition>
-                    <!--<el-footer>Footer</el-footer>-->
                 </el-container>
             </el-container>
         </el-container>
@@ -20,8 +19,8 @@
 </template>
 
 <script>
-    import vHead from './Header.vue';
-    import vSidebar from './Sidebar.vue';
+    import vHead from '../components/common/Header.vue';
+    import vSidebar from '../components/common/Sidebar.vue';
 
     export default {
         components:{
