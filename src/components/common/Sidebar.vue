@@ -34,11 +34,9 @@
     export default {
         data() {
             return {
-                isCollapse: false,
-                //onRoutes:'user-manage-list',
                 items:[
                     {
-                        icon:'el-icon-star-on',
+                        icon:'el-icon-s-custom',
                         index:'1',
                         title:'用户管理',
                         subs:[
@@ -195,9 +193,11 @@
         },
         computed: {
             onRoutes() {
-                console.log(111)
                 //return this.$route.path.replace('/', '');
                 return this.$route.path.split('/').reverse()[0];
+            },
+            isCollapse(){
+                return this.$store.state.isCollapse;
             }
         }
     }
@@ -208,6 +208,6 @@
         display: none;
     }
     .el-submenu{
-        width:200px;
+        width:160px;
     }
 </style>

@@ -54,9 +54,7 @@
         },
         data() {
             return {
-                isCollapse: false,
-                showMsg:'收起',
-                widthChange:'160px',
+                isCollapse:false,
                 username:'',
             };
         },
@@ -66,7 +64,13 @@
         },
         methods: {
             CollapseChange(){
-
+                if(this.isCollapse){
+                    this.isCollapse = false;
+                    this.$store.commit('newIsCollapse',this.isCollapse);
+                }else{
+                    this.isCollapse = true;
+                    this.$store.commit('newIsCollapse',this.isCollapse);
+                }
             },
             handleCommand(command){
                 //console.log(command)

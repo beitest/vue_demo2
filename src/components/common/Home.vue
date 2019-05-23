@@ -5,7 +5,7 @@
                 <v-head></v-head>
             </el-header>
             <el-container>
-                <el-aside width="200px">
+                <el-aside width="200px" :style="widthChange">
                     <v-sidebar></v-sidebar>
                 </el-aside>
                 <el-container>
@@ -27,6 +27,21 @@
         components:{
             vHead,
             vSidebar
+        },
+        data(){
+            return{
+                //widthChange:{width:'200px'}
+            }
+        },
+        computed: {
+            widthChange:{
+                get(){
+                    return this.widthChange = this.$store.state.isCollapse?{width:'60px'}:{width:'160px'};
+                },
+                set(){
+
+                }
+            }
         }
     }
 </script>

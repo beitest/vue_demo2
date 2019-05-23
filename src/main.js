@@ -8,6 +8,9 @@ import App from './App.vue';
 import Api from './request/api'
 import http from './request/http'
 
+//引进新建store.js
+import store from './store.js'
+
 
 Vue.use(ElementUI,Vuex);
 
@@ -24,7 +27,8 @@ Vue.prototype.qs = qs;
 
 new Vue({
   render: h => h(App),
-    router
+    router,
+    store
 }).$mount('#app');
 
 // new Vue({
