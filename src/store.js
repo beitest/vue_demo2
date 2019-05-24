@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state : {
-        isCollapse : false
+        isCollapse : false,
+        token:'root123'
     },
     mutations:{
         newIsCollapse(state,msg){

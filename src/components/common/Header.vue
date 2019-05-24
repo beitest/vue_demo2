@@ -59,7 +59,6 @@
             };
         },
         created(){
-            this.getLogin();
             this.getData();
         },
         methods: {
@@ -75,22 +74,11 @@
             handleCommand(command){
                 //console.log(command)
             },
-            getLogin(){
-                this.http.post(this.Api.login,{
-                    password:'root',
-                    username:'root'
-                }).then(response =>{
-                    this.username = response.data.data.username;
-                    console.log(this.username);
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            },
             getData(){
                 this.http.get(this.Api.statisticsDeviceCount,{}).then(response =>{
-                    console.log(response);
+                    //console.log(response);
                 }).catch(function (error) {
-                    console.log(error);
+                    //console.log(error);
                 });
             },
             login(){

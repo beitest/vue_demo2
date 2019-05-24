@@ -1,21 +1,45 @@
 <template>
     <div class="login">
         <div class="box">
-            <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form :model="ruleForm" ref="ruleForm" :rules="rules" status-icon label-width="100px" class="demo-ruleForm">
                 <el-form-item label="用户名" prop="username">
-                    <el-input type="password" v-model="ruleForm.username" autocomplete="off"></el-input>
+                    <el-input type="input" v-model="ruleForm.username" autocomplete="off" @keyup.enter.native="login"></el-input>
                 </el-form-item>
-                <el-form-item label="密码" prop="pass">
-                    <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+                <el-form-item label="密码" prop="password">
+                    <el-input type="password" v-model="ruleForm.password" autocomplete="off" @keyup.enter.native="login"></el-input>
                 </el-form-item>
-                <el-form-item label="确认密码" prop="checkPass">
-                    <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-                </el-form-item>
+
+                <div class="remember_psw">
+                    <el-checkbox v-model="checked"></el-checkbox>
+                    <span>记住密码</span>
+                </div>
                 <el-form-item>
                     <el-button type="primary" @click="login">登陆</el-button>
+                    <p class="forget_psw" @click="dialogFormVisible=true">忘记密码</p>
                 </el-form-item>
             </el-form>
         </div>
+        <el-dialog title="重置密码申请" :visible.sync="dialogFormVisible" width="35%">
+            <el-form ref="form" :model="form" :label-width="'120px'" :rules="rules2">
+                <el-form-item label="上级用户名：" prop="bossUsername">
+                    <el-input v-model="form.bossUsername" placeholder="请输入上级用户名"/>
+                </el-form-item>
+                <el-form-item label="用户名：" prop="username">
+                    <el-input v-model="form.username" placeholder="请输入用户名"/>
+                </el-form-item>
+                <el-form-item label="真是姓名：" prop="realName">
+                    <el-input v-model="form.realName" placeholder="请输入真实姓名"/>
+                </el-form-item>
+
+                <el-form-item label="电话号码：" prop="mobile">
+                    <el-input v-model="form.mobile" placeholder="请输入电话号码"/>
+                </el-form-item>
+
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="opDialogOk">提交申请</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -24,16 +48,57 @@
         name: 'login',
         data(){
             return {
+                checked:false,
+                dialogFormVisible: false,
+                form:{},
                 ruleForm: {
                     username: '',
-                    pass: '',
-                    checkPass: '',
+                    password: '',
                 },
+                rules: {
+                    username: [
+                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                        { min: 3, max: 16, message: '长度在 3 到 16 个字符', trigger: 'blur' }
+                    ],
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
+                    ]
+                },
+                rules2: {
+                    bossUsername: [
+                        {required: true, message: '请输入上级用户名', trigger: 'blur'},
+                    ],
+                    username: [
+                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                    ],
+                    realName: [
+                        {required: true, message: '请输入真实姓名', trigger: 'blur'},
+                    ],
+                    mobile: [
+                        {required: true, message: '请输入电话号码', trigger: 'blur'},
+                    ]
+                }
             }
         },
         methods:{
             login(){
-                this.$router.push('/Home')
+                this.$refs['ruleForm'].validate((value) =>{
+                    if(value){
+                        this.http.post(this.Api.login,this.ruleForm).then(response =>{
+                            if(response){
+                                this.username = response.data.data.username;
+                                //console.log(this.username);
+                            }
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                        this.$router.push('/Home')
+                    }
+                })
+            },
+            opDialogOk(){
+
             }
         }
     }
