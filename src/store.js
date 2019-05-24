@@ -6,7 +6,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state : {
         isCollapse : false,
-        token:'root123'
+        token:JSON.parse(window.localStorage.getItem('userInfos')) && JSON.parse(window.localStorage.getItem('userInfos')).accountId
     },
     mutations:{
         newIsCollapse(state,msg){

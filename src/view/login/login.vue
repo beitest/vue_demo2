@@ -81,19 +81,35 @@
                 }
             }
         },
+        created(){
+            //获取登录用户名、密码
+            let loginInfos = JSON.parse(window.localStorage.getItem('loginInfos'));
+            if(loginInfos && loginInfos.username && loginInfos.password){
+                this.ruleForm.username = loginInfos.username;
+                this.ruleForm.password = loginInfos.password;
+                this.checked = true;
+            }else{
+                this.checked = false;
+            }
+        },
         methods:{
             login(){
                 this.$refs['ruleForm'].validate((value) =>{
                     if(value){
                         this.http.post(this.Api.login,this.ruleForm).then(response =>{
                             if(response){
-                                this.username = response.data.data.username;
-                                //console.log(this.username);
+                                if(this.checked){
+                                    //保存密码
+                                    window.localStorage.setItem('loginInfos', JSON.stringify(this.ruleForm))
+                                }else{
+                                    window.localStorage.removeItem('loginInfos')
+                                }
+                                window.localStorage.setItem('userInfos', JSON.stringify(response.data.data));
+                                this.$router.push('/Home')
                             }
                         }).catch(function (error) {
                             console.log(error);
                         });
-                        this.$router.push('/Home')
                     }
                 })
             },

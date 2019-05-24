@@ -40,23 +40,27 @@ axios.interceptors.request.use(config => {
 
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {
-    // 根据后端接口code执行操作
-    switch(response.data.code) { //重新登
-        case 101:
-        Message.error("登录超时，请重新登录");
-        // 401 清除token信息并跳转到登录页面
-        //store.commit(types.LOGOUT)
-
-        // 只有在当前路由不是登录页面才跳转
-        router.currentRoute.path !== 'login' && router.replace({path: 'login',query: { redirect: router.currentRoute.path }})
-        return Promise.resolve(response);
-        break;
-    }
-
     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
     // 否则的话抛出错误
     if (response.status === 200) {
-        return Promise.resolve(response);
+        // 根据后端接口code执行操作
+        switch(response.data.code) { //重新登
+            case 101:
+                Message.error("登录超时，请重新登录");
+                // 401 清除token信息并跳转到登录页面
+                //store.commit(types.LOGOUT)
+
+                // 只有在当前路由不是登录页面才跳转
+                router.currentRoute.path !== 'login' && router.replace({path: 'login',query: { redirect: router.currentRoute.path }})
+                return Promise.resolve(response);
+                break;
+            case 0:
+                return Promise.resolve(response);
+                break;
+            default:
+                Message.error(response.data.msg);
+                return "";
+        }
     } else {
         Message.error(err.message)
         return Promise.reject(response);
