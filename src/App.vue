@@ -3,6 +3,7 @@
     <!--<transition name="fade" mode="out-in">-->
       <!--<router-view></router-view>-->
     <!--</transition>-->
+    <login></login>
     <Home></Home>
   </div>
 </template>
