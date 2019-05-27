@@ -15,13 +15,13 @@
                     </el-col>
                     <el-col :span="16" >
                         <ul class="header-msg">
-                            <li>设备总数:2</li>
-                            <li>在线数:2</li>
-                            <li>离线数:0</li>
-                            <li>禁用数:0</li>
-                            <li>故障数:0</li>
-                            <li>缺货设备数:1</li>
-                            <li>未启用设备数:0</li>
+                            <li>设备总数:{{data.totoalCount}}&nbsp;&nbsp;</li>
+                            <li>在线数:{{data.onlineCount}}&nbsp;&nbsp;</li>
+                            <li>离线数:{{data.unOnlineCount}}&nbsp;&nbsp;</li>
+                            <li>禁用数:{{data.forbiddenCount}}&nbsp;&nbsp;</li>
+                            <li>故障数:{{data.exceptionCount}}&nbsp;&nbsp;</li>
+                            <li>缺货设备数:{{data.outStoreCount}}&nbsp;&nbsp;</li>
+                            <li>未启用数:{{data.unactiveCount}}&nbsp;&nbsp;</li>
                         </ul>
                     </el-col>
                     <el-col :span="4">
@@ -56,10 +56,20 @@
             return {
                 isCollapse:false,
                 username:'',
+                data: {
+                    exceptionCount: 0,
+                    forbiddenCount: 0,
+                    onlineCount: 0,
+                    outStoreCount: 0,
+                    totoalCount: 0,
+                    unOnlineCount: 0,
+                    unactiveCount: 0
+                }
             };
         },
         created(){
-            this.getData();
+            this.getUsername();
+            //this.getStatisticsDeviceCount();
         },
         methods: {
             CollapseChange(){
@@ -71,19 +81,38 @@
                     this.$store.commit('newIsCollapse',this.isCollapse);
                 }
             },
-            handleCommand(command){
-                //console.log(command)
+            getUsername() {
+                let userInfo = window.localStorage.getItem('userInfo');
+                if (userInfo === undefined || userInfo === '' || userInfo === null) {
+                    //登录失效
+                    //this.$router.push('/login');
+                } else {
+                    this.username = JSON.parse(userInfo).username;
+                    let accountId = JSON.parse(userInfo).accountId;
+                    //this.getMegCount(accountId);
+                }
             },
-            getData(){
-                this.http.get(this.Api.statisticsDeviceCount,{}).then(response =>{
-                    //console.log(response);
+            handleCommand(command){
+                if(command === 'loginout'){
+                    this.http.post(this.Api.logout, this.data).then(response => {
+                        if (response !== "") {
+                            console.log(response.data)
+                            window.localStorage.removeItem('userInfos')
+                            this.$router.push('/login');
+                        }
+                    });
+                }
+            },
+            getStatisticsDeviceCount(){
+                this.http.get(this.Api.statisticsDeviceCount).then(response =>{
+                    console.log(response.data);
                 }).catch(function (error) {
                     //console.log(error);
                 });
             },
-            login(){
-                this.$router.push('/login')
-            }
+            // login(){
+            //     this.$router.push('/login')
+            // }
         },
         computed: {
 

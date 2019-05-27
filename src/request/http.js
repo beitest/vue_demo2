@@ -59,7 +59,7 @@ axios.interceptors.response.use(response => {
                 break;
             default:
                 Message.error(response.data.msg);
-                return "";
+                return Promise.resolve(response);
         }
     } else {
         Message.error(err.message)

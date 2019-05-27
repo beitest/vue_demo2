@@ -97,7 +97,7 @@
                 this.$refs['ruleForm'].validate((value) =>{
                     if(value){
                         this.http.post(this.Api.login,this.ruleForm).then(response =>{
-                            if(response){
+                            if(response && response.data.code ==0){
                                 if(this.checked){
                                     //保存密码
                                     window.localStorage.setItem('loginInfos', JSON.stringify(this.ruleForm))
@@ -105,7 +105,11 @@
                                     window.localStorage.removeItem('loginInfos')
                                 }
                                 window.localStorage.setItem('userInfos', JSON.stringify(response.data.data));
-                                this.$router.push('/Home')
+                                this.$router.push('/user-manage-list');
+                                console.log(11111111)
+                            }else{
+                                console.log(2222)
+                                this.$router.push('/login')
                             }
                         }).catch(function (error) {
                             console.log(error);
