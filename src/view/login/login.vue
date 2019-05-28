@@ -104,11 +104,14 @@
                                 }else{
                                     window.localStorage.removeItem('loginInfos')
                                 }
+                                if(this.$route.query.redirect){ //如果存在参数
+                                    let redirect = this.$route.query.redirect;
+                                    this.$router.push(redirect);//则跳转至进入登录页前的路由
+                                }else{
+                                    this.$router.push('/Home');//否则跳转至首页
+                                }
                                 window.localStorage.setItem('userInfos', JSON.stringify(response.data.data));
-                                this.$router.push('/user-manage-list');
-                                console.log(11111111)
                             }else{
-                                console.log(2222)
                                 this.$router.push('/login')
                             }
                         }).catch(function (error) {
