@@ -1,12 +1,12 @@
 import Vue from 'vue';
-import Vuex from 'vuex'
+import Vuex from 'vuex';
 import router from './router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/reset.css'
 import App from './App.vue';
-import Api from './request/api'
-import http from './request/http'
+import Api from './request/api';
+import http from './request/http';
 
 //引进新建store.js
 import store from './store.js'
@@ -15,16 +15,21 @@ import store from './store.js'
 Vue.use(ElementUI,Vuex);
 
 Vue.config.productionTip = false;
-Vue.prototype.Api = Api;
+Vue.prototype.$Api = Api;
 Vue.prototype.http = http;
 
 import axios from 'axios'
 import qs from 'qs'
 
-Vue.prototype.axios = axios;
+// Vue.prototype.axios = axios;
 Vue.prototype.qs = qs;
+Vue.prototype.$axios = axios.create({
+    baseURL: Api.hot,
+    timeout: 10000,
+    withCredentials: true
+});
 
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {  // 判断该路由是否需要登录权限
         if (store.state.token) {  // 通过vuex state获取当前的token是否存在
             next();
@@ -39,7 +44,7 @@ router.beforeEach((to, from, next) => {
         next();
     }
 
-});
+});*/
 
 new Vue({
   render: h => h(App),

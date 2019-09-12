@@ -1,208 +1,189 @@
 <template>
     <div class="sidebar">
-        <el-menu
-                :default-active="onRoutes"
-                background-color="#d2dce6"
-                class="el-menu-vertical-demo"
-                @open="handleOpen"
-                @close="handleClose"
-                :collapse="isCollapse"
-                active-text-color="#20a0ff"
-                unique-opened
-                router>
-            <template >
-                <el-submenu v-for="(item,index) in items" :index="item.index" :key="index">
-                    <template slot="title">
-                    <i :class="item.icon"></i>
-                    <span slot="title">{{item.title}}</span>
-                </template>
-                    <el-menu-item-group class="hidden-div" v-for="(list,i) in item.subs" :key="i">
-                        <el-menu-item :index="list.index">{{list.title}}</el-menu-item>
-                    </el-menu-item-group>
+        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" :background-color="bgColor"
+                 text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router><!--:collapse="collapse"-->
+            <!--<template v-for="item in items">
+              <template v-if="item.subs">
+                <el-submenu :index="item.index" :key="item.index">
+                  <template slot="title">
+                    <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
+                  </template>
+                  <template v-for="subItem in item.subs">
+                    <el-submenu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
+                      <template slot="title">{{ subItem.title }}</template>
+                      <el-menu-item v-for="(threeItem,i) in subItem.subs" :key="i" :index="threeItem.index">
+                        {{ threeItem.title }}
+                      </el-menu-item>
+                    </el-submenu>
+                    <el-menu-item v-else :index="subItem.index" :key="subItem.index">
+                      {{ subItem.title }}
+                    </el-menu-item>
+                  </template>
                 </el-submenu>
+              </template>
+              <template v-else>
+                <el-menu-item :index="item.index" :key="item.index">
+                  <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
+                </el-menu-item>
+              </template>
+            </template>-->
+            <template v-for="item in resourceTree">
+                <template>
+                    <el-submenu :index="item.name" >
+                        <template slot="title">
+                            <i :class="item.icon"></i>
+                            <span slot="title">{{ item.name }}</span>
+                        </template>
+                        <el-menu-item v-for="(subItem,i) in item.childrenNode" :key="i" :index="subItem.page">{{ subItem.name}}</el-menu-item>
+                    </el-submenu>
+                </template>
             </template>
         </el-menu>
     </div>
 </template>
-
 <script>
+    import bus from '../../assets/js/bus.js';
     export default {
         data() {
             return {
-                items:[
-                    {
-                        icon:'el-icon-s-custom',
-                        index:'1',
-                        title:'用户管理',
-                        subs:[
-                            {
-                                index: 'user-manage-list',
-                                title: '用户列表'
-                            },
-                            {
-                                index: 'partner_info',
-                                title: '新增合伙人'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-star-on',
-                        index: '2',
-                        title: '管理员管理',
-                        subs: [
-                            {
-                                index: 'manager_list',
-                                title: '管理员列表'
-                            },
-                            {
-                                index: 'manager_info',
-                                title: '新增管理员'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-menu',
-                        index: '3',
-                        title: '设备管理',
-                        subs: [
-                            {
-                                index: 'device_list',
-                                title: '设备列表'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-goods',
-                        index: '4',
-                        title: '香水管理',
-                        subs: [
-                            {
-                                index: 'perfume_list',
-                                title: '香水列表'
-                            },
-                            {
-                                index: 'perfume_info',
-                                title: '新增香水'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-tickets',
-                        index: '5',
-                        title: '物资管理',
-                        subs: [
-                            {
-                                index: 'material_list',
-                                title: '采购记录'
-                            },
-                            {
-                                index: 'material_info',
-                                title: '新增采购记录'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-picture',
-                        index: '6',
-                        title: '广告管理',
-                        subs: [
-                            {
-                                index: 'ad_list',
-                                title: '广告列表'
-                            },
-                            {
-                                index: 'ad_info',
-                                title: '新增广告'
-                            }
-                        ]
-                    },
+                collapse: false,
+                resourceTree:[],
+                bgColor:'#324157',
+                // items: [
+                //     {
+                //         icon: 'el-icon-user',
+                //         index: 'userlist',
+                //         title: '用户管理',
+                //         // subs: [
+                //         //     {
+                //         //         index: 'userlist',
+                //         //         title: '用户列表',
+                //         //     },
+                //         //     {
+                //         //         index: 'useradd',
+                //         //         title: '新增用户',
+                //         //     }
+                //         // ]
+                //     },
+                //     {
+                //         icon: 'el-icon-s-grid',
+                //         index: 'account_list',
+                //         title: '账号管理',
+                //     },
+                //     {
+                //         icon: 'el-icon-picture',
+                //         index: 'adlist',
+                //         title: '广告管理',
+                //         /*subs: [
+                //             {
+                //                 index: 'adlist',
+                //                 title: '广告列表',
+                //             },
+                //             {
+                //                 index: 'adadd',
+                //                 title: '广告创建',
+                //             }
+                //         ]*/
+                //     },
+                //     {
+                //         icon: 'el-icon-pie-chart',
+                //         index: 'datacharts',
+                //         title: '数据统计',/*
+                // subs: [
+                //     {
+                //         index: 'datacharts',
+                //         title: '数据统计',
+                //     }
+                // ]*/
+                //     },
+                //     {
+                //         icon: 'el-icon-mobile-phone',
+                //         index: 'apk_list',
+                //         title: 'APK管理',
+                //         /*subs: [
+                //             {
+                //                 index: 'apk_list',
+                //                 title: 'APK列表',
+                //             },
+                //             {
+                //                 index: 'apk_info',
+                //                 title: '新增APK',
+                //             }
+                //         ]*/
+                //     },
+                //     {
+                //         icon: 'el-icon-coin',
+                //         index: 'role_list',
+                //         title: '角色管理',
+                //     },
+                //     {
+                //         icon: 'el-icon-circle-plus-outline',
+                //         index: 'resources',
+                //         title: '新增资源',
+                //     },
+                //     {
+                //         icon: 'el-icon-message',
+                //         index: 'reset_list',
+                //         title: '修改密码',
+                //         /*subs: [
+                //             {
+                //                 index: 'reset_list',
+                //                 title: '申请列表',
+                //             },
+                //         ]*/
+                //     },
+                // ]
 
-                    {
-                        icon: 'el-icon-mobile-phone',
-                        index: '7',
-                        title: 'APK管理',
-                        subs: [
-                            {
-                                index: 'apk_list',
-                                title: 'apk列表'
-                            },
-                            {
-                                index: 'apk_info',
-                                title: '新增APK'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-edit-outline',
-                        index: '8',
-                        title: '数据统计',
-                        subs: [
-                            {
-                                index: 'device_sales',
-                                title: '设备月销售统计'
-                            },
-                            {
-                                index: 'perfume_sales',
-                                title: '香水销售统计'
-                            },
-                            {
-                                index: 'partner_sales',
-                                title: '设备销售统计'
-                            },
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-sold-out',
-                        index: '9',
-                        title: '订单管理',
-                        subs: [
-                            {
-                                index: 'order_list',
-                                title: '订单列表'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-message',
-                        index: '10',
-                        title: '修改密码申请',
-                        subs: [
-                            {
-                                index: 'reset_list',
-                                title: '申请列表'
-                            }
-                        ]
-                    }
-                ],
-                permissions: [],
-                accountType: ''
-            };
+            }
+        },
+        created() {
+            //通过 Event Bus 进行组件间通信，来折叠侧边栏
+            bus.$on('collapse', msg => {
+                this.collapse = msg;
+            })
+            bus.$on('bgColor', msg => {
+                this.bgColor = msg;
+            })
+            this.getMenu();
         },
         methods: {
-            handleOpen(key, keyPath) {
-                console.log(key, keyPath);
+            getMenu() {
+
+                this.http.get(this.$Api.getTree).then(response => {
+                    if (response.data.code === 200) {
+                        this.resourceTree = response.data.content;
+                    }
+
+                })
             },
-            handleClose(key, keyPath) {
-                console.log(key, keyPath);
-            }
         },
         computed: {
             onRoutes() {
-                //return this.$route.path.replace('/', '');
-                return this.$route.path.split('/').reverse()[0];
-            },
-            isCollapse(){
-                return this.$store.state.isCollapse;
+                return this.$route.path.replace('/', '');
             }
         }
     }
 </script>
 
-<style>
-    .el-menu-item-group.hidden-div .el-menu-item-group__title{
-        display: none;
+<style scoped>
+    .sidebar {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 60px;
+        bottom:0;
+        overflow-y: scroll;
     }
-    .el-submenu{
-        width:160px;
+
+    .sidebar::-webkit-scrollbar {
+        width: 0;
+    }
+
+    .sidebar-el-menu:not(.el-menu--collapse) {
+        width: 180px;
+    }
+
+    .sidebar > ul {
+        height: 100%;
     }
 </style>
