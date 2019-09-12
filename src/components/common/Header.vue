@@ -82,10 +82,10 @@
                 }
             },
             getUsername() {
-                let userInfo = window.localStorage.getItem('userInfo');
+                let userInfo = window.localStorage.getItem('userInfos');
                 if (userInfo === undefined || userInfo === '' || userInfo === null) {
                     //登录失效
-                    //this.$router.push('/login');
+                    this.$router.push('/login');
                 } else {
                     this.username = JSON.parse(userInfo).username;
                     let accountId = JSON.parse(userInfo).accountId;

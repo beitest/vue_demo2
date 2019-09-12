@@ -19,9 +19,9 @@ export default new VueRouter({
             children:[{
                     path:'/Home',
                     name:'defaultPage',
-                    meta: {
-                        requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
-                    },
+                    // meta: {
+                    //     requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
+                    // },
                     component: (resolve) => require(['./components/common/default'],resolve), //路由懒加载方式
 
                 },

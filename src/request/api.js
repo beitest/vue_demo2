@@ -3,7 +3,7 @@
 const BaseURL = "http://39.105.124.108";//测试
 //const baseURL = "http://47.92.220.18";//正式
 // const httpIp = "http://localhost";
-const port = "8080";
+const port = "8686";
 const hot = BaseURL + ":" + port;
 
 
